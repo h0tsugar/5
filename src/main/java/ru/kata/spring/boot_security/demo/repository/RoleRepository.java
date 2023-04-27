@@ -1,26 +1,13 @@
 package ru.kata.spring.boot_security.demo.repository;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.model.Role;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface RoleRepository extends CrudRepository<Role, Long> {
-
-    @Query("from Role as r where r.id = :id")
-    Optional<Role> findById(@Param("id") Long id);
-
-    @Query("from Role as r where r.roleName = :role")
-    Optional<Role> findByRole(@Param("role") String role);
-
-    @Query("from Role")
-    List<Role> getAllRole();
-
-    @Query("from Role as r where r.roleName = :name")
-    Optional<Role> findByNameRole(@Param("name") String name);
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    @Override
+    List<Role> findAll();
 }

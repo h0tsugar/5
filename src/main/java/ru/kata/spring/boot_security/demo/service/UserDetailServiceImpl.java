@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.serviceImpl;
+package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +18,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findUserByUsername(username)
+        return userRepository.findUsername(username)
                 .stream().map(user -> new User(user.getUsername(), user.getPassword(), user.getAuthorities()))
                 .findFirst()
                 .orElseThrow(() -> new CustomUserException("Пользователь не найден"));

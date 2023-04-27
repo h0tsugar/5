@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,7 +22,8 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "user_name")
-    private String userName;
+
+    private String username;
 
     @Column(name = "first_name")
     private String firstName;
@@ -40,8 +40,8 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String userName, String password, String firstName, String lastName, String gender, Set<Role> roles) {
-        this.userName = userName;
+    public User(String username, String password, String firstName, String lastName, String gender, Set<Role> roles) {
+        this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -64,9 +64,23 @@ public class User implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", gender='" + gender + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
+
     public String roleName() {
         return roles.stream().findFirst().orElseThrow().getRoleName();
     }
+
 
     @Override
     public String getPassword() {
@@ -75,7 +89,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     @Override
@@ -98,16 +112,5 @@ public class User implements UserDetails {
         return false;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(password, user.password) && Objects.equals(gender, user.gender) && Objects.equals(roles, user.roles);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, lastName, password, gender, roles);
-    }
 }
